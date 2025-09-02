@@ -2,6 +2,38 @@
 
 一个包含 Next.js 前端和 Python API 后端的交易平台项目，可部署在 Zeabur 上。
 
+## 快速开始
+
+### 方式1：最简单的本地开发（推荐）
+
+```bash
+# 启动前端（在第一个终端窗口）
+chmod +x quick-start-frontend.sh
+./quick-start-frontend.sh
+
+# 启动后端（在第二个终端窗口）
+chmod +x quick-start-backend.sh
+./quick-start-backend.sh
+```
+
+### 方式2：一键启动本地开发环境
+
+```bash
+chmod +x start-dev.sh
+./start-dev.sh local
+```
+
+### 方式3：使用 Docker（如果已安装）
+
+```bash
+./start-dev.sh
+```
+
+## 访问地址
+- 前端：http://localhost:3000
+- 后端：http://localhost:8000
+- API 文档：http://localhost:8000/docs
+
 ## 项目结构
 
 ```
