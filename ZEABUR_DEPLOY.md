@@ -2,99 +2,77 @@
 
 本项目已配置为可在 Zeabur 平台上部署的微服务架构。
 
-## 🚀 快速部署（修复版本）
+## 🚀 部署成功 - 域名配置
+
+### 实际部署信息
+- **公网访问域名**: `tradingagents.zeabur.app`
+- **内网访问端口**: `trade.zeabur.internal:8080`
+- **端口**: 8080
 
 ### 前端服务 (Next.js)
 - **服务名称**: trade-frontend
 - **根目录**: `/frontend`
-- **自动构建**: Zeabur 会自动检测 Next.js 项目
-- **端口**: 3000 (自动分配)
+- **访问地址**: https://tradingagents.zeabur.app
 
 ### 后端服务 (Python FastAPI)
 - **服务名称**: trade-backend  
 - **根目录**: `/backend`
-- **Python 版本**: 3.11 (通过 runtime.txt 指定)
-- **启动命令**: `uvicorn main:app --host 0.0.0.0 --port $PORT` (通过 Procfile 指定)
-- **端口**: 8000 (或 Zeabur 自动分配)
+- **访问地址**: https://tradingagents.zeabur.app
+- **API 文档**: https://tradingagents.zeabur.app/docs
 
-## 📋 部署前检查清单
+## 🔧 已更新的配置
 
-✅ **后端必需文件**:
-- `main.py` - FastAPI 应用主文件 ✅
-- `requirements.txt` - Python 依赖文件 ✅  
-- `Procfile` - 启动命令配置 ✅
-- `runtime.txt` - Python 版本指定 ✅
+### 后端 CORS 配置 ✅
+已更新 `backend/main.py`，允许来自以下源的请求：
+- `https://tradingagents.zeabur.app`
+- `http://tradingagents.zeabur.app` 
+- `http://trade.zeabur.internal:8080`
+- 本地开发环境
 
-✅ **前端必需文件**:
-- `package.json` - Node.js 项目配置 ✅
-- `next.config.js` - Next.js 配置 ✅
-- `src/app/` - 应用页面文件 ✅
+### 前端 API 配置 ✅
+已更新 `frontend/next.config.js` 和 `frontend/src/lib/api.ts`：
+- 默认 API 地址：`https://tradingagents.zeabur.app`
+- 支持通过环境变量 `NEXT_PUBLIC_API_URL` 覆盖
 
-## 🔧 环境变量配置
+### 前端测试功能 ✅
+已添加 API 连接测试按钮，可以直接在页面上验证前后端通信状态
 
-### 前端环境变量
-在 Zeabur 前端服务中设置：
-```
-NODE_ENV=production
-NEXT_PUBLIC_API_URL=https://your-backend-domain.zeabur.app
-NEXT_TELEMETRY_DISABLED=1
-```
+## 📝 重新部署步骤
 
-### 后端环境变量
-在 Zeabur 后端服务中设置：
-```
-DEBUG=False
-PORT=8000
-ALLOWED_ORIGINS=https://your-frontend-domain.zeabur.app
-SECRET_KEY=your-production-secret-key-please-change-this
-```
-
-## 📝 详细部署步骤
-
-1. **推送代码到 GitHub 仓库**
+1. **推送更新的代码**
    ```bash
    git add .
-   git commit -m "Fix: 修复 Zeabur 部署配置"
+   git commit -m "Fix: 配置 Zeabur 实际域名和端口"
    git push origin main
    ```
 
-2. **在 Zeabur 中创建项目**
-   - 登录 Zeabur 控制台
-   - 点击 "New Project"
-   - 连接您的 GitHub 仓库
+2. **重新部署服务**
+   - 在 Zeabur 控制台触发重新部署
+   - 或者等待自动部署完成
 
-3. **部署后端服务**
-   - 点击 "Add Service" -> "Git"
-   - 选择仓库和 `backend` 目录
-   - Zeabur 会自动检测到 Python 项目并使用 Procfile 启动
-   - 等待构建完成并获取后端域名
+3. **测试连接**
+   - 访问：https://tradingagents.zeabur.app
+   - 点击页面上的 "测试 API 连接" 按钮
+   - 查看连接状态
 
-4. **部署前端服务**
-   - 点击 "Add Service" -> "Git"  
-   - 选择仓库和 `frontend` 目录
-   - 在环境变量中设置 `NEXT_PUBLIC_API_URL` 为后端域名
-   - 等待构建完成
+## 🎯 验证部署
 
-5. **配置跨域**
-   - 在后端服务环境变量中设置 `ALLOWED_ORIGINS` 为前端域名
-   - 重启部署后端服务
+访问以下地址验证部署：
+- **前端页面**: https://tradingagents.zeabur.app
+- **后端健康检查**: https://tradingagents.zeabur.app/health
+- **API 状态**: https://tradingagents.zeabur.app/api/status
+- **API 文档**: https://tradingagents.zeabur.app/docs
 
-## ⚠️ 常见问题解决
+## ⚠️ 如果仍然无法访问
 
-**Q: 部署失败，没有运行时日志？**
-A: 通常是构建阶段失败，检查：
-- `requirements.txt` 是否包含所有依赖 ✅ 已修复
-- `main.py` 是否存在且包含 FastAPI 应用 ✅ 已修复  
-- `Procfile` 启动命令是否正确 ✅ 已修复
+1. **检查 Zeabur 服务状态**
+   - 确认两个服务都已成功部署并运行
+   - 查看部署日志是否有错误
 
-**Q: 前后端无法通信？**
-A: 检查跨域配置：
-- 前端 `NEXT_PUBLIC_API_URL` 是否指向正确的后端域名
-- 后端 `ALLOWED_ORIGINS` 是否包含前端域名
+2. **检查域名解析**
+   - 确认 `tradingagents.zeabur.app` 可以正常解析
+   - 尝试访问 https://tradingagents.zeabur.app/health
 
-## 🎯 测试部署
-
-部署完成后访问：
-- 前端: https://your-frontend-domain.zeabur.app
-- 后端: https://your-backend-domain.zeabur.app  
-- API 文档: https://your-backend-domain.zeabur.app/docs
+3. **检查端口配置**
+   - 确认 Zeabur 中的端口设置为 8080
+   - 检查防火墙或网络限制

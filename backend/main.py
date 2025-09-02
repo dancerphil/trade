@@ -18,12 +18,27 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# 获取允许的源地址
+allowed_origins = [
+    "https://tradingagents.zeabur.app",  # Zeabur 公网域名
+    "http://tradingagents.zeabur.app",   # HTTP 版本
+    "https://tradingagents.zeabur.app:8080",  # 带端口
+    "http://localhost:3000",  # 本地开发
+    "http://localhost:8080",  # 本地测试
+    "http://trade.zeabur.internal:8080",  # 内网访问
+]
+
+# 从环境变量获取额外的允许源
+env_origins = os.getenv("ALLOWED_ORIGINS", "")
+if env_origins:
+    allowed_origins.extend(env_origins.split(","))
+
 # 配置 CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # 生产环境中应该配置具体的域名
+    allow_origins=allowed_origins,
     allow_credentials=True,
-    allow_methods=["*"],
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["*"],
 )
 
