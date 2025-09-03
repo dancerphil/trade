@@ -1,7 +1,6 @@
-'use client';
+import {useMemo} from 'react';
 import styled from '@emotion/styled';
 import {useRound} from './conversation';
-import {useMemo} from 'react';
 import {Message} from './Message';
 import {ButtonGroup} from './ButtonGroup';
 
@@ -9,7 +8,7 @@ const Container = styled.div`
     padding: 40px 20px;
 `;
 
-export default function Home() {
+export const Trade = () => {
     const round = useRound();
     const rounds = useMemo(
         () => {
@@ -27,4 +26,4 @@ export default function Home() {
             {rounds.map(r => <Message key={r} round={r} />)}
         </Container>
     );
-}
+};
