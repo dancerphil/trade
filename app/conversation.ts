@@ -61,9 +61,3 @@ export const resetConversation = () => {
     currentRoundRegion.reset();
     messageRegion.resetAll();
 };
-
-if (import.meta.hot) {
-    import.meta.hot.accept(() => {
-        resetConversation();
-    });
-}
