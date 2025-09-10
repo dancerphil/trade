@@ -1,4 +1,4 @@
-import {createMappedRegion, createRegion} from 'region-core';
+import {createMappedRegion, createRegion} from 'region-react';
 import {Message} from './types';
 import {ModelMessage, StreamTextResult} from 'ai';
 

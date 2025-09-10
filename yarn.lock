@@ -3812,12 +3812,19 @@ regexp.prototype.flags@^1.5.3, regexp.prototype.flags@^1.5.4:
     gopd "^1.2.0"
     set-function-name "^2.0.2"
 
-region-core@^11.12.0:
-  version "11.12.0"
-  resolved "https://registry.yarnpkg.com/region-core/-/region-core-11.12.0.tgz#023eb58ca881b7b4d7f85c59d6280b591f80f7c9"
-  integrity sha512-c9GzKOynuMa8nW5zN18i1BaUHMjRpmpo5TTgvkI9SNObC417IEwLknIOzGkfqcFnpOT/iKTwu3VX4N8iL9SJhA==
+region-core@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/region-core/-/region-core-12.0.0.tgz#e958ce85347ad6f3e48c707205d69078db256c97"
+  integrity sha512-AGmGOt68wQcSm2gW23wF28QnEVC1rulQnxXRxH2F2Tmy1XYGIPBeThD46xZTNiaaXBdjbpW6IbqUUu5lMo75Ug==
   dependencies:
     json-stable-stringify "^1.3.0"
+
+region-react@^12.0.0:
+  version "12.0.0"
+  resolved "https://registry.yarnpkg.com/region-react/-/region-react-12.0.0.tgz#f8672da61a4836ee208cd21c47516c213c714e05"
+  integrity sha512-cHsZbPIJByBs6BOXlzpOFrJ/8OUulm7ATcUAwaHc3hgAtqqd74cFhaiHf2aL9/RzioK+h/i8x0HGyyi2TDpqUg==
+  dependencies:
+    region-core "^12.0.0"
 
 remark-gfm@^4.0.1:
   version "4.0.1"
