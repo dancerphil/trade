@@ -1,9 +1,26 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from tushareApi import get_daily_data
+from utils import daily
+import pandas
 
 app = FastAPI()
+
+def toData(df: pandas.DataFrame):
+    # 将 DataFrame 转换为字典格式
+    if not df.empty:
+        return {
+            "success": True,
+            "data": df.to_dict('records'),
+            "count": len(df)
+        }
+    else:
+        return {
+            "success": True,
+            "data": [],
+            "count": 0,
+            "message": "No data found"
+        }
 
 # 添加 CORS 中间件以支持前端访问
 app.add_middleware(
@@ -24,19 +41,17 @@ async def get_daily(
     trade_date: str = Query("", description="交易日期，格式：YYYYMMDD"),
     start_date: str = Query("", description="开始日期，格式：YYYYMMDD"),
     end_date: str = Query("", description="结束日期，格式：YYYYMMDD"),
-    limit: int = Query(100, description="数据条数限制")
 ):
     """
     获取股票日线数据
     """
-    result = get_daily_data(
+    result = daily(
         ts_code=ts_code,
         trade_date=trade_date,
         start_date=start_date,
         end_date=end_date,
-        limit=limit
     )
-    return result
+    return toData(result)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)

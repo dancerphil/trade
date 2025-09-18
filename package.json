@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "python3 api/main.py & next dev --turbopack",
+    "dev": "yarn dev-fe & yarn start-api",
+    "dev-fe": "next dev --turbopack",
+    "start-api": "cd api && python3 main.py",
     "build": "next build --turbopack",
-    "start": "python3 api/main.py && next start",
+    "start": "next start & yarn start-api",
     "lint": "eslint .",
     "lint-type": "tsc",
     "prepare": "husky"
