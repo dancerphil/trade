@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {Button} from 'antd';
+import {Button} from '@/ui/button';
 import {resetConversation} from './conversation';
 import {main} from './main';
 
