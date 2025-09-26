@@ -1,6 +1,6 @@
 import {ModelMessage} from 'ai';
 
-export type TaskType = '闲聊' | '分析' | '辩论' | '总结';
+export type TaskType = '闲聊' | '分析' | '立论' | '辩论' | '总结';
 
 export interface Task {
     type: TaskType;
@@ -13,14 +13,12 @@ export interface Agent {
 
 export interface System {
     角色: string;
-    团队背景: string;
-    讨论背景: string;
-    原则: string;
+    讨论原则: string;
 }
 
 export interface AgentConfig {
     name: string;
-    system: Partial<System>;
+    system: System;
     taskSystem?: Partial<Record<TaskType, string>>;
 }
 

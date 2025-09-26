@@ -1,5 +1,11 @@
 // import {TfIdf} from 'natural';
-import {createFundamentalAgent, createMarketAgent} from './agents';
+import {
+    createFundamentalAgent,
+    createMarketAgent,
+    createAggressiveDebater,
+    createConservativeDebater,
+    createNeutralDebater, createRiskManager,
+} from './agents';
 import {hostSpeak} from './conversation';
 
 // const tfidf = new TfIdf();
@@ -21,9 +27,27 @@ import {hostSpeak} from './conversation';
 export const main = async () => {
     const fundamentalAgent = createFundamentalAgent();
     const marketAgent = createMarketAgent();
+    const aggressiveDebater = createAggressiveDebater();
+    const conservativeDebater = createConservativeDebater();
+    const neutralDebater = createNeutralDebater();
+    const riskManager = createRiskManager();
     hostSpeak('此次会议主要分析贵州茅台交易策略。分为三个阶段：产出分析报告、交易策略讨论、总结。');
     hostSpeak('现在请基本面分析师分析贵州茅台过去一周的基本面信息，并撰写一份全面的公司基本面信息报告。');
     await fundamentalAgent.speak({type: '分析'});
     hostSpeak('现在请技术分析师分析贵州茅台过去一周的市场数据，并撰写一份全面的技术分析报告。');
     await marketAgent.speak({type: '分析'});
+    hostSpeak('现在请激进辩论者基于报告内容提出交易观点。');
+    await aggressiveDebater.speak({type: '立论'});
+    hostSpeak('现在请保守辩论者基于报告内容提出交易观点。');
+    await conservativeDebater.speak({type: '立论'});
+    hostSpeak('现在请中立辩论者基于报告内容提出交易观点。');
+    await neutralDebater.speak({type: '立论'});
+    hostSpeak('现在请激进辩论者反驳保守和中立方的论点。');
+    await aggressiveDebater.speak({type: '辩论'});
+    hostSpeak('现在请保守辩论者反驳激进和中立方的论点。');
+    await conservativeDebater.speak({type: '辩论'});
+    hostSpeak('现在请中立辩论者反驳激进和保守方的论点。');
+    await neutralDebater.speak({type: '辩论'});
+    hostSpeak('现在请交易经理总结各方论点，并提出最终的交易策略。');
+    await riskManager.speak({type: '总结'});
 };
