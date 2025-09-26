@@ -1,15 +1,8 @@
 import {ModelMessage, streamText} from 'ai';
-import {TaskType, Task, Agent} from './types';
+import {Agent, AgentConfig, System, Task} from './types';
 import {appendStream, getConversation} from './conversation';
 import {deepseek} from './ai/models';
 import {tradeTools} from './ai/tradeTools';
-
-interface System {
-    角色: string;
-    团队背景: string;
-    讨论背景: string;
-    原则: string;
-}
 
 const defaultSystem: System = {
     角色: '你是一个专业的股票交易员。',
@@ -26,25 +19,19 @@ const toSystemString = (system: Record<string, string>) => {
         .join('\n\n');
 };
 
-interface Config {
-    name: string;
-    system: Partial<System>;
-    taskSystem: Partial<Record<TaskType, string>>;
-}
-
-export const createAgent = (config: Config): Agent => {
+export const createAgent = (config: AgentConfig): Agent => {
     const {name, system, taskSystem} = config;
     const systemText = toSystemString({
         ...defaultSystem,
         ...system,
     });
-    const work = (task: Task) => {
-        const taskPrompt = taskSystem[task.type];
+    const work = (task?: Task) => {
+        const taskPrompt = taskSystem?.[task?.type];
         const taskMessage: ModelMessage[] = taskPrompt ? [{role: 'system', content: taskPrompt}] : [];
         return streamText({
             model: deepseek,
             tools: tradeTools,
-            // maxRetries: 5,
+            stopWhen: [],
             messages: [
                 {role: 'system', content: systemText},
                 ...getConversation(name),
@@ -52,7 +39,7 @@ export const createAgent = (config: Config): Agent => {
             ],
         });
     };
-    const speak = async (task: Task) => {
+    const speak = async (task?: Task) => {
         const result = work(task);
         await appendStream(name, result);
     };

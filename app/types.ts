@@ -8,7 +8,20 @@ export interface Task {
 
 export interface Agent {
     name: string;
-    speak: (task: Task) => Promise<void>;
+    speak: (task?: Task) => Promise<void>;
+}
+
+export interface System {
+    角色: string;
+    团队背景: string;
+    讨论背景: string;
+    原则: string;
+}
+
+export interface AgentConfig {
+    name: string;
+    system: Partial<System>;
+    taskSystem?: Partial<Record<TaskType, string>>;
 }
 
 // 自定义的结构，方便渲染，也方便转换成 ai 对话历史
