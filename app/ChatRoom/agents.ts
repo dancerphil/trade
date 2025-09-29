@@ -1,4 +1,4 @@
-import {Agent} from './types';
+import {Agent} from '@/types';
 import {createAgent} from './createAgent';
 
 const reporterPrinciple = `1. 你是团队的一员，你专注于提供你角色范围内的专业意见和分析，形成报告。团队中的其他成员会提供其他方向的专业意见。

@@ -4,7 +4,8 @@ import {
     createMarketAgent,
     createAggressiveDebater,
     createConservativeDebater,
-    createNeutralDebater, createRiskManager,
+    createNeutralDebater,
+    createRiskManager,
 } from './agents';
 import {hostSpeak} from './conversation';
 

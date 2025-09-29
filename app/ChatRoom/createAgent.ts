@@ -1,8 +1,8 @@
 import {ModelMessage, streamText} from 'ai';
-import {Agent, AgentConfig, Task} from './types';
+import {Agent, AgentConfig, Task} from '../types';
 import {appendStream, getConversation} from './conversation';
-import {deepseek} from './ai/models';
-import {tradeTools} from './ai/tradeTools';
+import {deepseek} from '../ai/models';
+import {tradeTools} from '../ai/tradeTools';
 
 const defaultSystem = {
     讨论背景: '你正参加一场股票交易团队的讨论。团队围绕某只股票的交易决策展开讨论。流程上分为生成报告、辩论和决策三个阶段。',

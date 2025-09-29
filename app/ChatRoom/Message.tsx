@@ -1,9 +1,9 @@
 import styled from '@emotion/styled';
 import {flex1, width} from '@hero-u/css';
 import {css} from '@emotion/css';
+import {Markdown} from '@/components/Markdown';
+import {IconMessage} from '@/icons';
 import {useMessage} from './conversation';
-import {Markdown} from './components/Markdown';
-import {IconMessage} from './icons';
 
 const Container = styled.div`
     display: flex;
