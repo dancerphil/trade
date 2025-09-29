@@ -1,17 +1,21 @@
 'use client';
-import {useMemo} from 'react';
+import {useEffect, useMemo} from 'react';
 import {useRound} from './conversation';
 import {Message} from './Message';
 import {ButtonGroup} from './ButtonGroup';
-import {useAutoScroll} from './useAutoScroll';
+import {initScrollHandler, scrollHandlerRegion} from './startAutoScroll';
 
 export const ChatRoom = () => {
     const round = useRound();
 
-    // 使用自动滚动Hook
-    const {messagesEndRef, containerRef} = useAutoScroll({
-        dependency: round,
-    });
+    useEffect(
+        () => {
+            initScrollHandler();
+            const {startAutoScroll} = scrollHandlerRegion.getValue();
+            startAutoScroll();
+        },
+        [],
+    );
 
     const rounds = useMemo(
         () => {
@@ -25,11 +29,11 @@ export const ChatRoom = () => {
     );
 
     return (
-        <div className="min-h-screen bg-background">
+        <div id="scroll-container" className="min-h-screen bg-background">
             {/* 吸顶控制区域 */}
             <ButtonGroup />
             {/* 对话内容区域 */}
-            <div ref={containerRef} className="container mx-auto px-4 pt-6 pb-20">
+            <div className="container mx-auto px-4 pt-6 pb-20">
                 {rounds.length === 0 && (
                     <div className="text-center py-12">
                         <p className="text-muted-foreground">输入分析主题并点击开始，观看多智能体的专业分析讨论</p>
@@ -40,7 +44,7 @@ export const ChatRoom = () => {
                 </div>
             </div>
             {/* 用于滚动定位的隐藏元素 */}
-            <div ref={messagesEndRef} />
+            <div id="scroll-end" />
         </div>
     );
 };
