@@ -7,7 +7,7 @@ import {
     createNeutralDebater,
     createRiskManager,
 } from './agents';
-import {hostSpeak} from './conversation';
+import {hostSpeak, getTopic} from './conversation';
 
 // const tfidf = new TfIdf();
 //
@@ -26,16 +26,18 @@ import {hostSpeak} from './conversation';
 // });
 
 export const main = async () => {
+    const topic = getTopic() || '贵州茅台';
     const fundamentalAgent = createFundamentalAgent();
     const marketAgent = createMarketAgent();
     const aggressiveDebater = createAggressiveDebater();
     const conservativeDebater = createConservativeDebater();
     const neutralDebater = createNeutralDebater();
     const riskManager = createRiskManager();
-    hostSpeak('此次会议主要分析贵州茅台交易策略。分为三个阶段：产出分析报告、交易策略讨论、总结。');
-    hostSpeak('现在请基本面分析师分析贵州茅台过去一周的基本面信息，并撰写一份全面的公司基本面信息报告。');
+
+    hostSpeak(`此次会议主要分析${topic}交易策略。分为三个阶段：产出分析报告、交易策略讨论、总结。`);
+    hostSpeak(`现在请基本面分析师分析${topic}过去一周的基本面信息，并撰写一份全面的公司基本面信息报告。`);
     await fundamentalAgent.speak({type: '分析'});
-    hostSpeak('现在请技术分析师分析贵州茅台过去一周的市场数据，并撰写一份全面的技术分析报告。');
+    hostSpeak(`现在请技术分析师分析${topic}过去一周的市场数据，并撰写一份全面的技术分析报告。`);
     await marketAgent.speak({type: '分析'});
     hostSpeak('现在请激进辩论者基于报告内容提出交易观点。');
     await aggressiveDebater.speak({type: '立论'});

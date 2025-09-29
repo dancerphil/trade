@@ -5,9 +5,17 @@ import {Message} from '@/types';
 // round = length -1
 const currentRoundRegion = createRegion<number>(-1);
 
+// 添加主题状态管理
+const topicRegion = createRegion<string>('');
+
 const getRound = currentRoundRegion.getValue;
 
 export const useRound = currentRoundRegion.useValue;
+
+// 导出主题相关功能
+export const useTopic = topicRegion.useValue;
+export const setTopic = topicRegion.set;
+export const getTopic = topicRegion.getValue;
 
 const messageRegion = createMappedRegion<number, Message>();
 
@@ -60,4 +68,5 @@ export const hostSpeak = (text: string) => {
 export const resetConversation = () => {
     currentRoundRegion.reset();
     messageRegion.resetAll();
+    topicRegion.set('');
 };

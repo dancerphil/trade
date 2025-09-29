@@ -1,15 +1,12 @@
-import styled from '@emotion/styled';
-import {useRound} from './conversation';
+'use client';
 import {useMemo} from 'react';
+import {useRound} from './conversation';
 import {Message} from './Message';
 import {ButtonGroup} from './ButtonGroup';
 
-const Container = styled.div`
-    padding: 40px 20px;
-`;
-
 export const ChatRoom = () => {
     const round = useRound();
+
     const rounds = useMemo(
         () => {
             const arr = [];
@@ -20,10 +17,24 @@ export const ChatRoom = () => {
         },
         [round],
     );
+
     return (
-        <Container>
+        <div className="min-h-screen bg-background">
+            {/* 吸顶控制区域 */}
             <ButtonGroup />
-            {rounds.map(r => <Message key={r} round={r} />)}
-        </Container>
+
+            {/* 对话内容区域 */}
+            <div className="container mx-auto px-4 py-6">
+                {rounds.length === 0 && (
+                    <div className="text-center py-12">
+                        <p className="text-muted-foreground">输入分析主题并点击开始，观看多智能体的专业分析讨论</p>
+                    </div>
+                )}
+
+                <div className="space-y-4">
+                    {rounds.map(r => <Message key={r} round={r} />)}
+                </div>
+            </div>
+        </div>
     );
 };
