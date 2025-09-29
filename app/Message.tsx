@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import {flex1, width} from '@panda-design/components';
+import {flex1, width} from '@hero-u/css';
 import {css} from '@emotion/css';
 import {useMessage} from './conversation';
 import {Markdown} from './components/Markdown';
