@@ -2,7 +2,7 @@ import {Card} from '@/ui/card';
 import {Badge} from '@/ui/badge';
 import {Markdown} from '@/components/Markdown';
 import {IconMessage} from '@/icons';
-import {useMessage} from './conversation';
+import {useMessage} from '../process/conversation';
 
 // 智能体颜色配置
 const agentColors: Record<string, string> = {

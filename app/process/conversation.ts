@@ -1,6 +1,6 @@
 import {createMappedRegion, createRegion} from 'region-react';
 import {ModelMessage, StreamTextResult} from 'ai';
-import {Message} from '@/types';
+import {Message} from '@/types/types';
 
 // round = length -1
 const currentRoundRegion = createRegion<number>(-1);

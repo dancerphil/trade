@@ -8,6 +8,8 @@ import {
     createRiskManager,
 } from './agents';
 import {hostSpeak, getTopic} from './conversation';
+import {setScene} from '@/regions/scene';
+import {promptSegments} from '@/constants/promptSegments';
 
 // const tfidf = new TfIdf();
 //
@@ -33,6 +35,12 @@ export const main = async () => {
     const conservativeDebater = createConservativeDebater();
     const neutralDebater = createNeutralDebater();
     const riskManager = createRiskManager();
+
+    setScene('金融分析', {
+        agents: [],
+        promptSegments,
+        promptInterpolate: '{{}}',
+    });
 
     hostSpeak(`此次会议主要分析${topic}交易策略。分为三个阶段：产出分析报告、交易策略讨论、总结。`);
     hostSpeak(`现在请基本面分析师分析${topic}过去一周的基本面信息，并撰写一份全面的公司基本面信息报告。`);

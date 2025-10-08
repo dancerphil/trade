@@ -1,6 +1,6 @@
 'use client';
 import {useEffect, useMemo} from 'react';
-import {useRound} from './conversation';
+import {useRound} from '../process/conversation';
 import {Message} from './Message';
 import {ButtonGroup} from './ButtonGroup';
 import {initScrollHandler, scrollHandlerRegion} from './startAutoScroll';

@@ -2,8 +2,8 @@ import {Button} from '@/ui/button';
 import {Input} from '@/ui/input';
 import {Badge} from '@/ui/badge';
 import {Play, Square} from 'lucide-react';
-import {resetConversation, useTopic, setTopic} from './conversation';
-import {main} from './main';
+import {resetConversation, useTopic, setTopic} from '../process/conversation';
+import {main} from '../process/main';
 import {useState} from 'react';
 
 // 智能体配置

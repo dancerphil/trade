@@ -1,5 +1,3 @@
-import {ModelMessage} from 'ai';
-
 export type TaskType = '闲聊' | '分析' | '立论' | '辩论' | '总结';
 
 export interface Task {
@@ -11,14 +9,9 @@ export interface Agent {
     speak: (task?: Task) => Promise<void>;
 }
 
-export interface System {
-    角色: string;
-    讨论原则: string;
-}
-
 export interface AgentConfig {
     name: string;
-    system: System;
+    system: string;
     taskSystem?: Partial<Record<TaskType, string>>;
 }
 
@@ -28,5 +21,3 @@ export interface Message {
     role: string;
     content: string;
 }
-
-export type ConversationMessage = Omit<ModelMessage, 'id'>;
