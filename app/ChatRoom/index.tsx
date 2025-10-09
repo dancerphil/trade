@@ -1,18 +1,15 @@
-'use client';
 import {useEffect, useMemo} from 'react';
 import {useProcess} from '@/regions/process';
 import {Message} from './Message';
 import {OperationCard} from './OperationCard';
-import {initScrollHandler, scrollHandlerRegion} from './startAutoScroll';
 
 export const ChatRoom = () => {
     const {round, status} = useProcess();
 
     useEffect(
         () => {
-            initScrollHandler();
-            const {startAutoScroll} = scrollHandlerRegion.getValue();
-            startAutoScroll();
+            // 动态导入，确保只在客户端执行
+            import('./startAutoScroll');
         },
         [],
     );
