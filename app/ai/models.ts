@@ -1,12 +1,23 @@
-import {createFireworks} from '@ai-sdk/fireworks';
+// import {createFireworks} from '@ai-sdk/fireworks';
+import {createOpenRouter} from '@openrouter/ai-sdk-provider';
 
 // https://fireworks.ai/models
-const fireworks = createFireworks({
-    apiKey: process.env.NEXT_PUBLIC_FIREWORKS_API_KEY,
+// const fireworks = createFireworks({
+//     apiKey: process.env.NEXT_PUBLIC_FIREWORKS_API_KEY,
+// });
+
+// https://openrouter.ai/models
+const openrouter = createOpenRouter({
+    apiKey: process.env.NEXT_PUBLIC_OPENROUTER_API_KEY,
 });
 
-export const deepseek = fireworks('accounts/fireworks/models/deepseek-v3');
+// export const deepseek = fireworks('accounts/fireworks/models/deepseek-v3');
 
-export const glm = fireworks('accounts/fireworks/models/glm-4p5');
+export const deepseek = openrouter('deepseek/deepseek-v3.1-terminus');
 
-export const fireFunction = fireworks('accounts/fireworks/models/llama-v3p1-70b-instruct');
+// 不支持 tools
+export const gpt5 = openrouter('openai/gpt-5-chat');
+
+export const gemini = openrouter('google/gemini-2.5-flash-lite');
+
+export const model = gemini;

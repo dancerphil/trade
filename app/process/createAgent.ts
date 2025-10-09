@@ -1,7 +1,7 @@
 import {ModelMessage, streamText} from 'ai';
 import {Agent, AgentConfig, Task} from '@/types/types';
 import {appendStream, getConversation} from './conversation';
-import {deepseek} from '@/ai/models';
+import {model} from '@/ai/models';
 import {tradeTools} from '@/ai/tradeTools';
 import {getScene} from '@/regions/scene';
 import {template} from '@/utils/template';
@@ -17,7 +17,7 @@ export const createAgent = (config: AgentConfig): Agent => {
         const taskPrompt = taskSystem?.[task?.type];
         const taskMessage: ModelMessage[] = taskPrompt ? [{role: 'system', content: template(taskPrompt, prompts)}] : [];
         return streamText({
-            model: deepseek,
+            model,
             tools: tradeTools,
             stopWhen: [],
             messages: [
