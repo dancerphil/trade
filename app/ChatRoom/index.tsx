@@ -1,12 +1,12 @@
 'use client';
 import {useEffect, useMemo} from 'react';
-import {useRound} from '../process/conversation';
+import {useProcess} from '@/regions/process';
 import {Message} from './Message';
-import {ButtonGroup} from './ButtonGroup';
+import {OperationCard} from './OperationCard';
 import {initScrollHandler, scrollHandlerRegion} from './startAutoScroll';
 
 export const ChatRoom = () => {
-    const round = useRound();
+    const {round, status} = useProcess();
 
     useEffect(
         () => {
@@ -30,17 +30,16 @@ export const ChatRoom = () => {
 
     return (
         <div id="scroll-container" className="min-h-screen bg-background">
-            {/* 吸顶控制区域 */}
-            <ButtonGroup />
-            {/* 对话内容区域 */}
             <div className="container mx-auto px-4 pt-6 pb-20">
-                {rounds.length === 0 && (
-                    <div className="text-center py-12">
-                        <p className="text-muted-foreground">输入分析主题并点击开始，观看多智能体的专业分析讨论</p>
-                    </div>
-                )}
                 <div className="space-y-4">
+                    <OperationCard type="start" />
+                    {rounds.length === 0 && (
+                        <div className="text-center py-12">
+                            <p className="text-muted-foreground">输入分析主题并点击开始，观看多智能体的专业分析讨论</p>
+                        </div>
+                    )}
                     {rounds.map(r => <Message key={r} round={r} />)}
+                    {status === 'SUCCESS' && <OperationCard type="end" />}
                 </div>
             </div>
             {/* 用于滚动定位的隐藏元素 */}

@@ -1,46 +1,30 @@
-// import {TfIdf} from 'natural';
 import {
-    createFundamentalAgent,
-    createMarketAgent,
     createAggressiveDebater,
     createConservativeDebater,
+    createFundamentalAgent,
+    createMarketAgent,
     createNeutralDebater,
     createRiskManager,
 } from './agents';
-import {hostSpeak, getTopic} from './conversation';
+import {hostSpeak} from './conversation';
+import {getProcess, setProcess} from '@/regions/process';
 import {setScene} from '@/regions/scene';
 import {promptSegments} from '@/constants/promptSegments';
 
-// const tfidf = new TfIdf();
-//
-// // 添加文档
-// tfidf.addDocument('I want to book a flight to Beijing tomorrow');
-// tfidf.addDocument('Can you help me cancel my hotel reservation');
-// tfidf.addDocument('Show me the weather forecast for Shanghai');
-//
-// // 计算特定词的 TF-IDF 值
-// console.log('TF-IDF for "book":', tfidf.tfidf('book', 0));
-// console.log('TF-IDF for "flight":', tfidf.tfidf('flight', 0));
-//
-// // 获取文档的前N个重要词
-// tfidf.listTerms(0).slice(0, 5).forEach((item) => {
-//     console.log(item.term + ': ' + item.tfidf);
-// });
-
 export const main = async () => {
-    const topic = getTopic() || '贵州茅台';
+    setScene('金融分析', {
+        agents: [],
+        promptSegments,
+        promptInterpolate: '{{}}',
+    });
+    setProcess(process => ({...process, status: 'RUNNING'}));
+    const {topic} = getProcess();
     const fundamentalAgent = createFundamentalAgent();
     const marketAgent = createMarketAgent();
     const aggressiveDebater = createAggressiveDebater();
     const conservativeDebater = createConservativeDebater();
     const neutralDebater = createNeutralDebater();
     const riskManager = createRiskManager();
-
-    setScene('金融分析', {
-        agents: [],
-        promptSegments,
-        promptInterpolate: '{{}}',
-    });
 
     hostSpeak(`此次会议主要分析${topic}交易策略。分为三个阶段：产出分析报告、交易策略讨论、总结。`);
     hostSpeak(`现在请基本面分析师分析${topic}过去一周的基本面信息，并撰写一份全面的公司基本面信息报告。`);
@@ -61,4 +45,5 @@ export const main = async () => {
     await neutralDebater.speak({type: '辩论'});
     hostSpeak('现在请交易经理总结各方论点，并提出最终的交易策略。');
     await riskManager.speak({type: '总结'});
+    setProcess(process => ({...process, status: 'SUCCESS'}));
 };

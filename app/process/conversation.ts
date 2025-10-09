@@ -1,21 +1,7 @@
-import {createMappedRegion, createRegion} from 'region-react';
+import {createMappedRegion} from 'region-react';
 import {ModelMessage, StreamTextResult} from 'ai';
 import {Message} from '@/types/types';
-
-// round = length -1
-const currentRoundRegion = createRegion<number>(-1);
-
-// 添加主题状态管理
-const topicRegion = createRegion<string>('');
-
-const getRound = currentRoundRegion.getValue;
-
-export const useRound = currentRoundRegion.useValue;
-
-// 导出主题相关功能
-export const useTopic = topicRegion.useValue;
-export const setTopic = topicRegion.set;
-export const getTopic = topicRegion.getValue;
+import {getProcess, setProcess, resetProcess} from '@/regions/process';
 
 const messageRegion = createMappedRegion<number, Message>();
 
@@ -24,7 +10,7 @@ const getMessage = messageRegion.getValue;
 export const useMessage = messageRegion.useValue;
 
 export const getConversation = (currentRole: string) => {
-    const round = getRound();
+    const {round} = getProcess();
     const conversation: ModelMessage[] = [];
     for (let i = 0; i <= round; i++) {
         const {role, content} = getMessage(i);
@@ -39,14 +25,14 @@ export const getConversation = (currentRole: string) => {
 };
 
 export const appendMessage = (role: string, text?: string) => {
-    currentRoundRegion.set(v => v + 1);
-    const round = currentRoundRegion.getValue();
+    setProcess(process => ({...process, round: process.round + 1}));
+    const {round} = getProcess();
     messageRegion.set(round, {loading: false, role, content: text ?? ''});
 };
 
 export const appendStream = async (role: string, streamResult: StreamTextResult<any, any>) => {
-    currentRoundRegion.set(v => v + 1);
-    const round = currentRoundRegion.getValue();
+    setProcess(process => ({...process, round: process.round + 1}));
+    const {round} = getProcess();
     messageRegion.set(round, {loading: true, role, content: ''});
     const {textStream} = streamResult;
     for await (const textPart of textStream) {
@@ -66,7 +52,6 @@ export const hostSpeak = (text: string) => {
 };
 
 export const resetConversation = () => {
-    currentRoundRegion.reset();
+    resetProcess();
     messageRegion.resetAll();
-    topicRegion.set('');
 };
