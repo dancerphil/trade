@@ -20,4 +20,6 @@ export const gpt5 = openrouter('openai/gpt-5-chat');
 
 export const gemini = openrouter('google/gemini-2.5-flash-lite');
 
-export const model = gemini;
+export const claude = openrouter('anthropic/claude-sonnet-4.5');
+
+export const model = claude;
