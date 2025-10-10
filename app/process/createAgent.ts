@@ -2,7 +2,7 @@ import {ModelMessage, streamText} from 'ai';
 import {Agent, AgentConfig, Task} from '@/types/types';
 import {appendStream} from './conversation';
 import {model} from '@/ai/models';
-import {tradeTools} from '@/ai/tradeTools';
+import {tools} from '@/ai/tools';
 import {getScene} from '@/regions/scene';
 import {template} from '@/utils/template';
 import {getProcess} from '@/regions/process';
@@ -20,7 +20,7 @@ export const createAgent = (config: AgentConfig): Agent => {
         const taskMessage: ModelMessage[] = taskPrompt ? [{role: 'system', content: template(taskPrompt, templateData)}] : [];
         return streamText({
             model,
-            tools: tradeTools,
+            tools,
             stopWhen: [],
             messages: [
                 {role: 'system', content: template(system, templateData)},

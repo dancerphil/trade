@@ -1,12 +1,15 @@
 from fastapi import FastAPI, Query
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-from utils import daily
-import pandas
+from tushare import pro_api
+from pandas import DataFrame
+
+# 初始化pro接口
+pro = pro_api('f38aca0a7a767214233ae6d421ac4988cae7d9c2520c23731932cba9')
 
 app = FastAPI()
 
-def toData(df: pandas.DataFrame):
+def toData(df: DataFrame):
     # 将 DataFrame 转换为字典格式
     if not df.empty:
         return {
@@ -31,25 +34,74 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+query_ts_code = Query(..., description="股票代码，如：000001.SZ")
+query_trade_date = Query("", description="交易日期，格式：YYYYMMDD")
+query_start_date = Query("", description="开始日期，格式：YYYYMMDD")
+query_end_date = Query("", description="结束日期，格式：YYYYMMDD")
+
 @app.get("/api/health")
 async def health_check():
     return {"success": True}
 
 @app.get("/api/daily")
 async def get_daily(
-    ts_code: str = Query(..., description="股票代码，如：000001.SZ"),
-    trade_date: str = Query("", description="交易日期，格式：YYYYMMDD"),
-    start_date: str = Query("", description="开始日期，格式：YYYYMMDD"),
-    end_date: str = Query("", description="结束日期，格式：YYYYMMDD"),
+    ts_code: str = query_ts_code,
+    trade_date: str = query_trade_date,
+    start_date: str = query_start_date,
+    end_date: str = query_end_date,
 ):
     """
     获取股票日线数据
+
+    Args:
+        ts_code: 股票代码
+        trade_date: 交易日期
+        start_date: 开始日期
+        end_date: 结束日期
+
+    Returns:
+        包含股票日线数据的字典
     """
-    result = daily(
+    result = pro.daily(**{
+            "ts_code": ts_code,
+            "trade_date": trade_date,
+            "start_date": start_date,
+            "end_date": end_date,
+            "limit": "",
+            "offset": ""
+        }, fields=[
+            "ts_code", "trade_date", "open", "high", "low", "close", "pre_close", "change", "pct_chg", "vol", "amount"
+        ]
+    )
+    return toData(result)
+
+@app.get("/api/daily_basic")
+def get_daily_basic(
+    ts_code: str = query_ts_code,
+    trade_date: str = query_trade_date,
+    start_date: str = query_start_date,
+    end_date: str = query_end_date,
+):
+    """
+    获取每日指标数据（市盈率、市净率等）
+
+    Args:
+        ts_code: 股票代码
+        trade_date: 交易日期
+        start_date: 开始日期
+        end_date: 结束日期
+    """
+    result = pro.daily_basic(
         ts_code=ts_code,
         trade_date=trade_date,
         start_date=start_date,
         end_date=end_date,
+        fields=[
+            "ts_code", "trade_date", "close", "turnover_rate", "turnover_rate_f",
+            "volume_ratio", "pe", "pe_ttm", "pb", "ps", "ps_ttm",
+            "dv_ratio", "dv_ttm", "total_share", "float_share", "free_share",
+            "total_mv", "circ_mv"
+        ]
     )
     return toData(result)
 
