@@ -1,47 +1,43 @@
-import {createMappedRegion} from 'region-react';
-import {ModelMessage, StreamTextResult} from 'ai';
-import {Message} from '@/types/types';
-import {getProcess, setProcess, resetProcess} from '@/regions/process';
+import {StreamTextResult} from 'ai';
+import {getProcess, resetProcess, setProcess} from '@/regions/process';
+import {getMessage, resetAllMessage, setMessage} from '@/regions/message';
 
-const messageRegion = createMappedRegion<number, Message>();
-
-const getMessage = messageRegion.getValue;
-
-export const useMessage = messageRegion.useValue;
-
-export const getConversation = (currentRole: string) => {
+export const downloadConversation = () => {
     const {round} = getProcess();
-    const conversation: ModelMessage[] = [];
+    const outputs: string[] = [];
     for (let i = 0; i <= round; i++) {
         const {role, content} = getMessage(i);
-        const isCurrent = role === currentRole;
-        conversation.push({
-            role: isCurrent ? 'assistant' : 'user',
-            // 当把 role 加入 content 时，模型就会学着生成角色名，所以还是让模型通过上下文判断
-            content,
-        });
+        outputs.push(`## ${role}`);
+        outputs.push(content);
     }
-    return conversation;
+    const output = outputs.join('\n\n');
+    const blob = new Blob([output], {type: 'text/markdown'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'output.md';
+    a.click();
+    URL.revokeObjectURL(url);
 };
 
 export const appendMessage = (role: string, text?: string) => {
     setProcess(process => ({...process, round: process.round + 1}));
     const {round} = getProcess();
-    messageRegion.set(round, {loading: false, role, content: text ?? ''});
+    setMessage(round, {loading: false, role, content: text ?? ''});
 };
 
 export const appendStream = async (role: string, streamResult: StreamTextResult<any, any>) => {
     setProcess(process => ({...process, round: process.round + 1}));
     const {round} = getProcess();
-    messageRegion.set(round, {loading: true, role, content: ''});
+    setMessage(round, {loading: true, role, content: ''});
     const {textStream} = streamResult;
     for await (const textPart of textStream) {
-        messageRegion.set(round, message => ({
+        setMessage(round, message => ({
             ...message,
             content: message.content + textPart,
         }));
     }
-    messageRegion.set(round, message => ({
+    setMessage(round, message => ({
         ...message,
         loading: false,
     }));
@@ -53,5 +49,5 @@ export const hostSpeak = (text: string) => {
 
 export const resetConversation = () => {
     resetProcess();
-    messageRegion.resetAll();
+    resetAllMessage();
 };

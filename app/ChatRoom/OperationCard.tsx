@@ -2,7 +2,7 @@ import {Button} from '@/ui/button';
 import {Input} from '@/ui/input';
 import {Badge} from '@/ui/badge';
 import {Play} from 'lucide-react';
-import {resetConversation} from '@/process/conversation';
+import {downloadConversation, resetConversation} from '@/process/conversation';
 import {main} from '@/process/main';
 import {ChangeEvent, useCallback} from 'react';
 import {Card} from '@/ui/card';
@@ -15,7 +15,7 @@ const agents = [
     {name: '激进分析师', color: 'bg-red-500'},
     {name: '保守分析师', color: 'bg-yellow-500'},
     {name: '中立分析师', color: 'bg-purple-500'},
-    {name: '风险经理', color: 'bg-orange-500'},
+    {name: '交易经理', color: 'bg-orange-500'},
 ];
 
 interface Props {
@@ -58,9 +58,14 @@ export const OperationCard = ({type}: Props) => {
                         {isRunning ? null : (
                             <>
                                 {type === 'end' && (
-                                    <Button onClick={handleReset} variant="outline">
-                                        清除
-                                    </Button>
+                                    <>
+                                        <Button onClick={downloadConversation} variant="outline">
+                                            导出对话
+                                        </Button>
+                                        <Button onClick={handleReset} variant="outline">
+                                            清除
+                                        </Button>
+                                    </>
                                 )}
                                 <Button onClick={handleStart} disabled={!topic} className="flex items-center gap-2">
                                     <Play className="w-4 h-4" />
