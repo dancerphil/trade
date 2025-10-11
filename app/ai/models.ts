@@ -27,4 +27,4 @@ export const grok = openrouter('x-ai/grok-4-fast');
 // 太贵
 export const claude = openrouter('anthropic/claude-sonnet-4.5');
 
-export const model = claude;
+export const model = deepseek;

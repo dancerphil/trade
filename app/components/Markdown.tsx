@@ -1,8 +1,4 @@
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
-import 'github-markdown-css/github-markdown-light.css';
-
-const remarkPlugins = [remarkGfm];
+import {Streamdown} from 'streamdown';
 
 interface Props {
     children: string;
@@ -10,10 +6,10 @@ interface Props {
 
 export const Markdown = ({children}: Props) => {
     return (
-        <div className="markdown-body">
-            <ReactMarkdown remarkPlugins={remarkPlugins}>
-                {children}
-            </ReactMarkdown>
-        </div>
+        <Streamdown
+            // className="size-full [&>*:first-child]:mt-0 [&>*:last-child]:mb-0"
+        >
+            {children}
+        </Streamdown>
     );
 };
