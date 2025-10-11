@@ -15,6 +15,12 @@ export interface ParamsTsCode {
     ts_code: string; // 股票代码
 }
 
+export interface Stock {
+    ts_code: string; // 股票代码
+    name: string; // 股票名称
+    cnspell: string; // 拼音缩写
+}
+
 export interface Daily {
     ts_code: string; // 股票代码
     trade_date: string; // 交易日期，格式为 YYYYMMDD

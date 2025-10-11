@@ -9,7 +9,7 @@ export const ChatRoom = () => {
     useEffect(
         () => {
             // 动态导入，确保只在客户端执行
-            import('./startAutoScroll');
+            import('./mount');
         },
         [],
     );

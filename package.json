@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@ai-sdk/fireworks": "^1.0.14",
+    "@ant-design/nextjs-registry": "^1.1.0",
     "@emotion/css": "^11.13.4",
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.14.0",
@@ -28,6 +29,7 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@vercel/analytics": "^1.5.0",
     "ai": "^5.0.30",
+    "antd": "^5.27.4",
     "axios": "^1.12.2",
     "axios-interface": "^2.1.1",
     "class-variance-authority": "^0.7.1",

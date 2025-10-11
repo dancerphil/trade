@@ -1,12 +1,11 @@
 import {Button} from '@/ui/button';
-import {Input} from '@/ui/input';
 import {Badge} from '@/ui/badge';
 import {Play} from 'lucide-react';
 import {downloadConversation, resetConversation} from '@/process/conversation';
 import {main} from '@/process/main';
-import {ChangeEvent, useCallback} from 'react';
 import {Card} from '@/ui/card';
-import {setProcess, useProcess} from '@/regions/process';
+import {useProcess} from '@/regions/process';
+import {StockSelect} from '@/components/StockSelect';
 
 // 智能体配置
 const agents = [
@@ -26,13 +25,6 @@ export const OperationCard = ({type}: Props) => {
     const {status, topic} = useProcess();
     const isRunning = status === 'RUNNING';
 
-    const handleChange = useCallback(
-        (e: ChangeEvent<HTMLInputElement>) => {
-            setProcess(process => ({...process, topic: e.target.value}));
-        },
-        [],
-    );
-
     const handleStart = async () => {
         main();
     };
@@ -46,13 +38,7 @@ export const OperationCard = ({type}: Props) => {
             <div className="container mx-auto px-4 py-4">
                 <div className="flex items-center gap-4">
                     <div className="flex-1">
-                        <Input
-                            placeholder="输入分析主题（如：贵州茅台、比亚迪、宁德时代等）..."
-                            value={topic}
-                            onChange={handleChange}
-                            disabled={isRunning}
-                            className="max-w-md"
-                        />
+                        <StockSelect />
                     </div>
                     <div className="flex items-center gap-2">
                         {isRunning ? null : (

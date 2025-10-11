@@ -33,7 +33,7 @@ const handleScroll = () => {
     }
 };
 
-const startAutoScroll = () => {
+export const startAutoScroll = () => {
     const containerDom = document.getElementById('scroll-container');
     if (!containerDom) {
         return;
@@ -45,7 +45,3 @@ const startAutoScroll = () => {
         characterData: true,
     });
 };
-
-startAutoScroll();
-
-export {};

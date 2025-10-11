@@ -1,15 +1,22 @@
 import {createFactory} from 'axios-interface';
 import {format, subDays, subMonths} from 'date-fns';
-import {R, ParamsDaily, ParamsTsCode, Daily, DailyBasic} from './apiTypes';
+import {ParamsDaily, ParamsTsCode, Daily, DailyBasic, Stock} from './apiTypes';
 
-const {createInterface} = createFactory();
+const {createInterface} = createFactory({
+    onResolve: response => response.data.data,
+});
 
-export const apiGetHealth = createInterface<void, R>(
+export const apiGetHealth = createInterface<void, void>(
     'GET',
     '/api/health',
 );
 
-export const apiGetDaily = createInterface<ParamsDaily, R<Daily[]>>(
+export const apiGetStock = createInterface<void, Stock[]>(
+    'GET',
+    '/api/stock',
+);
+
+export const apiGetDaily = createInterface<ParamsDaily, Daily[]>(
     'GET',
     '/api/daily',
 );
@@ -40,7 +47,7 @@ export const apiGetNearestDailyOfMonth = (params: ParamsTsCode) => {
     });
 };
 
-export const apiGetDailyBasic = createInterface<ParamsDaily, R<DailyBasic[]>>(
+export const apiGetDailyBasic = createInterface<ParamsDaily, DailyBasic[]>(
     'GET',
     '/api/daily_basic',
 );

@@ -9,7 +9,7 @@ interface Process {
 const defaultProcess: Process = {
     // round = length -1
     round: -1,
-    topic: '贵州茅台',
+    topic: '贵州茅台（600519.SH）',
     status: 'WAITING',
 };
 
