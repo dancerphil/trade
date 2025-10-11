@@ -1,4 +1,4 @@
-import {ModelMessage, streamText} from 'ai';
+import {streamText} from 'ai';
 import {Agent, AgentConfig, Task} from '@/types/types';
 import {appendStream} from './conversation';
 import {model} from '@/ai/models';

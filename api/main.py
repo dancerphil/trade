@@ -53,6 +53,17 @@ async def startup():
 async def health_check():
     return {"success": True}
 
+@app.get("/api/stock")
+@cache(expire=3600)
+async def stock():
+    """
+    获取股票列表
+    """
+    result = pro.stock_basic(
+        fields=["ts_code", "name", "cnspell"]
+    )
+    return toData(result)
+
 @app.get("/api/daily")
 @cache(expire=expire)
 async def get_daily(
@@ -73,14 +84,12 @@ async def get_daily(
     Returns:
         包含股票日线数据的字典
     """
-    result = pro.daily(**{
-            "ts_code": ts_code,
-            "trade_date": trade_date,
-            "start_date": start_date,
-            "end_date": end_date,
-            "limit": "",
-            "offset": ""
-        }, fields=[
+    result = pro.daily(
+        ts_code=ts_code,
+        trade_date=trade_date,
+        start_date=start_date,
+        end_date=end_date,
+        fields=[
             "ts_code", "trade_date", "open", "high", "low", "close", "pre_close", "change", "pct_chg", "vol", "amount"
         ]
     )
