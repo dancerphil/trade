@@ -1,7 +1,4 @@
-export type TaskType = '闲聊' | '分析' | '立论' | '辩论' | '总结';
-
 export interface Task {
-    type: TaskType;
     memories?: Record<string, string>;
 }
 
@@ -13,7 +10,7 @@ export interface Agent {
 export interface AgentConfig {
     name: string;
     system: string;
-    taskSystem: Partial<Record<TaskType, string>>;
+    // taskSystem: Partial<Record<TaskType, string>>;
 }
 
 // 自定义的结构，方便渲染，也方便转换成 ai 对话历史

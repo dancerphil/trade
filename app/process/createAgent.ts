@@ -9,22 +9,19 @@ import {getProcess} from '@/regions/process';
 import {getMessage} from '@/regions/message';
 
 export const createAgent = (config: AgentConfig): Agent => {
-    const {name, system, taskSystem} = config;
+    const {name, system} = config;
 
     const work = (task: Task) => {
-        const {type, memories} = task;
+        const {memories} = task;
         const {promptSegments} = getScene('金融分析');
         const prompts: Record<string, string> = Object.fromEntries(promptSegments.map(({name, value}) => [name, value]));
         const templateData = {...prompts, ...(memories ?? {})};
-        const taskPrompt = taskSystem[type];
-        const taskMessage: ModelMessage[] = taskPrompt ? [{role: 'system', content: template(taskPrompt, templateData)}] : [];
         return streamText({
             model,
             tools,
             stopWhen: [],
             messages: [
                 {role: 'system', content: template(system, templateData)},
-                ...taskMessage,
             ],
         });
     };

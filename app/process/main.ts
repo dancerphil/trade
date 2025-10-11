@@ -35,14 +35,14 @@ export const main = async () => {
 
     memories['主题'] = topic;
     hostSpeak(`此次会议主要分析${topic}交易策略。分为三个阶段：产出分析报告、交易策略讨论、总结。`);
-    memories['基本面报告'] = (await fundamentalAgent.speak({type: '分析', memories})).content;
-    memories['技术面报告'] = (await marketAgent.speak({type: '分析', memories})).content;
-    debateMemories.push(await aggressiveDebater.speak({type: '立论', memories}));
-    debateMemories.push(await conservativeDebater.speak({type: '立论', memories}));
-    debateMemories.push(await neutralDebater.speak({type: '立论', memories}));
-    debateMemories.push(await aggressiveDebater.speak({type: '辩论', memories: {...memories, 辩论过程: getDebateMessage(debateMemories)}}));
-    debateMemories.push(await conservativeDebater.speak({type: '辩论', memories: {...memories, 辩论过程: getDebateMessage(debateMemories)}}));
-    debateMemories.push(await neutralDebater.speak({type: '辩论', memories: {...memories, 辩论过程: getDebateMessage(debateMemories)}}));
-    await riskManager.speak({type: '总结', memories: {...memories, 辩论过程: getDebateMessage(debateMemories)}});
+    memories['基本面报告'] = (await fundamentalAgent.speak({memories})).content;
+    memories['技术面报告'] = (await marketAgent.speak({memories})).content;
+    debateMemories.push(await aggressiveDebater.speak({memories}));
+    debateMemories.push(await conservativeDebater.speak({memories}));
+    debateMemories.push(await neutralDebater.speak({memories}));
+    debateMemories.push(await aggressiveDebater.speak({memories: {...memories, 辩论过程: getDebateMessage(debateMemories)}}));
+    debateMemories.push(await conservativeDebater.speak({memories: {...memories, 辩论过程: getDebateMessage(debateMemories)}}));
+    debateMemories.push(await neutralDebater.speak({memories: {...memories, 辩论过程: getDebateMessage(debateMemories)}}));
+    await riskManager.speak({memories: {...memories, 辩论过程: getDebateMessage(debateMemories)}});
     setProcess(process => ({...process, status: 'SUCCESS'}));
 };

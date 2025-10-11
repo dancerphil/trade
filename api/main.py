@@ -3,6 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 from tushare import pro_api
 from pandas import DataFrame
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.inmemory import InMemoryBackend
+from fastapi_cache.decorator import cache
 
 # 初始化pro接口
 pro = pro_api('f38aca0a7a767214233ae6d421ac4988cae7d9c2520c23731932cba9')
@@ -34,16 +37,24 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+expire = 600  # 缓存时间，单位秒
+
 query_ts_code = Query(..., description="股票代码，如：000001.SZ")
 query_trade_date = Query("", description="交易日期，格式：YYYYMMDD")
 query_start_date = Query("", description="开始日期，格式：YYYYMMDD")
 query_end_date = Query("", description="结束日期，格式：YYYYMMDD")
+
+@app.on_event("startup")
+async def startup():
+    """初始化内存缓存"""
+    FastAPICache.init(InMemoryBackend())
 
 @app.get("/api/health")
 async def health_check():
     return {"success": True}
 
 @app.get("/api/daily")
+@cache(expire=expire)
 async def get_daily(
     ts_code: str = query_ts_code,
     trade_date: str = query_trade_date,
@@ -76,6 +87,7 @@ async def get_daily(
     return toData(result)
 
 @app.get("/api/daily_basic")
+@cache(expire=expire)
 def get_daily_basic(
     ts_code: str = query_ts_code,
     trade_date: str = query_trade_date,
@@ -107,3 +119,4 @@ def get_daily_basic(
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+
