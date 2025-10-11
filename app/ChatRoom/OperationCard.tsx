@@ -6,6 +6,7 @@ import {main} from '@/process/main';
 import {Card} from '@/ui/card';
 import {useProcess} from '@/regions/process';
 import {StockSelect} from '@/components/StockSelect';
+import {ModelSelect} from '@/components/ModelSelect';
 
 // 智能体配置
 const agents = [
@@ -39,6 +40,9 @@ export const OperationCard = ({type}: Props) => {
                 <div className="flex items-center gap-4">
                     <div className="flex-1">
                         <StockSelect />
+                    </div>
+                    <div className="flex-1">
+                        <ModelSelect />
                     </div>
                     <div className="flex items-center gap-2">
                         {isRunning ? null : (
