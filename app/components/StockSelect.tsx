@@ -1,4 +1,5 @@
 import {Select} from 'antd';
+import {match} from 'pinyin-pro';
 import {setProcess, useProcess} from '@/regions/process';
 import {useStocks, useStocksLoading} from '@/regions/stock';
 import {Stock} from '@/ai/apiTypes';
@@ -18,6 +19,7 @@ const filterOption = (input: string, option: any) => {
         name.toLowerCase().includes(searchText)
         || ts_code.toLowerCase().includes(searchText)
         || cnspell.toLowerCase().includes(searchText)
+        || Boolean(match(name, searchText))
     );
 };
 
